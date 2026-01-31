@@ -1,18 +1,24 @@
 {
   "name": "@rubber/core",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "tsc --watch"
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/node": "catalog:",
-    "typescript": "catalog:"
-  },
-  "packageManager": "pnpm@10.22.0"
+  "license": "MIT"
 }

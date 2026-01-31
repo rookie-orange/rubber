@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
+    "dev": "turbo dev --filter=@rubber/playground-dom",
+    "build": "turbo build",
+    "test": "vitest",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
@@ -17,6 +20,7 @@
     "oxfmt": "catalog:",
     "oxlint": "catalog:",
     "oxlint-tsgolint": "catalog:",
+    "turbo": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"

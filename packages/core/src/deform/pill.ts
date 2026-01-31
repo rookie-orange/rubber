@@ -12,11 +12,11 @@ export function createPillDeform(options: PillOptions) {
   const r = width / 2
   const midY = height / 2
 
-  return function deform(stretch: number, ctx: DeformContext): string {
+  return function deform(_stretch: number, ctx: DeformContext): string {
     const bulge = maxBulge * Math.sin((ctx.progress * Math.PI) / 2)
 
-    const left = r - bulge
-    const right = r + bulge
+    const left = -bulge
+    const right = width + bulge
 
     return `
       M ${r} 0

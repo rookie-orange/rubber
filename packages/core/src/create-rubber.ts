@@ -1,4 +1,9 @@
-import { RubberOptions, RubberState, DragInput, RubberOutput } from './types'
+import type {
+  RubberOptions,
+  RubberState,
+  DragInput,
+  RubberOutput,
+} from './types'
 import { applyResistance } from './resistance'
 import { Spring } from './spring/spring'
 

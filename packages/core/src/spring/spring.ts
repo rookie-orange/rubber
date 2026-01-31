@@ -3,8 +3,11 @@ import type { SpringOptions } from '../types'
 export class Spring {
   private value = 0
   private velocity = 0
+  private options: SpringOptions
 
-  constructor(private options: SpringOptions) {}
+  constructor(options: SpringOptions) {
+    this.options = options
+  }
 
   start(from: number, velocity = 0) {
     this.value = from

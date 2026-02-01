@@ -1,27 +1,28 @@
-export type Axis = 'x' | 'y'
+export type Axis = 'x' | 'y' | 'xy'
+
+export interface Vector2 {
+  x: number
+  y: number
+}
 
 export interface DragInput {
-  delta: number
-  time: number // ms
+  deltaX?: number
+  deltaY?: number
+  /** @deprecated use deltaX/deltaY instead */
+  delta?: number
 }
 
 export interface RubberState {
-  stretch: number
-  velocity: number
-  isDragging: boolean
+  stretchX: number
+  stretchY: number
+  velocityX: number
+  velocityY: number
+  progress: number
+  phase: 'idle' | 'dragging' | 'spring'
 }
 
-export interface RubberOutput<Shape = unknown> {
-  stretch: number
-  progress: number
+export interface RubberOutput<Shape = unknown> extends RubberState {
   shape?: Shape
-}
-
-export interface DeformContext {
-  progress: number
-  stretch: number
-  velocity: number
-  phase: 'dragging' | 'spring'
 }
 
 export interface SpringOptions {
@@ -35,6 +36,6 @@ export interface RubberOptions<Shape = unknown> {
   maxStretch?: number
   resistance?: number
   spring?: SpringOptions
-  deform?: (stretch: number, ctx: DeformContext) => Shape
+  deform?: (state: RubberState) => Shape
   onUpdate?: (output: RubberOutput<Shape>) => void
 }

@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/src/style.css" />
-    <title>dom</title>
+    <title>Rubber Demo</title>
   </head>
-  <body>
-    <div id="app">
-      <svg width="40" height="120">
-        <path id="pill" fill="white" />
-      </svg>
+  <body class="bg-primary h-screen">
+    <div id="app" class="size-full">
+      <div class="size-full flex justify-center items-center">
+        <div class="card card-side bg-base-100 shadow-lg overflow-hidden">
+          <div class="card-body">
+            <input type="range" min="0" max="100" value="40" class="range" />
+          </div>
+          <div
+            class="size-64 flex flex-col justify-center items-center bg-zinc-100"
+          >
+            <div
+              id="rubber-y"
+              class="size-32 flex justify-center items-center bg-secondary rounded-full touch-none select-none cursor-grab"
+            ></div>
+          </div>
+        </div>
+      </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

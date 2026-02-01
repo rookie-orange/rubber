@@ -1,109 +1,138 @@
 import type {
   RubberOptions,
-  RubberState,
   DragInput,
   RubberOutput,
+  RubberState,
 } from './types'
 import { applyResistance } from './resistance'
-import { Spring } from './spring/spring'
+import { Spring } from './spring'
 
 export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
   const {
+    axis = 'y',
     maxStretch = 80,
     resistance = 0.6,
-    spring: springOptions = { stiffness: 220, damping: 20 },
+    spring: springOptions = { stiffness: 300, damping: 20 },
     deform,
     onUpdate,
   } = options
 
-  const state: RubberState = {
-    stretch: 0,
-    velocity: 0,
-    isDragging: false,
-  }
+  let stretchX = 0
+  let stretchY = 0
+  let velocityX = 0
+  let velocityY = 0
+  let phase: 'idle' | 'dragging' | 'spring' = 'idle'
+  let lastTime = 0
+  let rafId: number | null = null
 
   const spring = new Spring(springOptions)
 
-  let lastTime = 0
-  let phase: 'dragging' | 'spring' = 'dragging'
+  function getProgress(): number {
+    const sx = axis === 'y' ? 0 : stretchX
+    const sy = axis === 'x' ? 0 : stretchY
+    const magnitude = Math.sqrt(sx * sx + sy * sy)
+    return Math.min(magnitude / maxStretch, 1)
+  }
 
   function emit() {
-    const progress = Math.min(Math.abs(state.stretch) / maxStretch, 1)
-
-    const shape = deform?.(state.stretch, {
+    const progress = getProgress()
+    const state: RubberState = {
+      stretchX,
+      stretchY,
+      velocityX,
+      velocityY,
       progress,
-      stretch: state.stretch,
-      velocity: state.velocity,
       phase,
-    })
-
-    const output: RubberOutput<Shape> = {
-      stretch: state.stretch,
-      progress,
-      shape,
     }
-
+    const shape = deform?.(state)
+    const output: RubberOutput<Shape> = { ...state, shape }
     onUpdate?.(output)
   }
 
-  function drag(input: DragInput) {
-    if (!state.isDragging) {
-      state.isDragging = true
-      phase = 'dragging'
+  function tick(time: number) {
+    if (phase !== 'spring') {
+      rafId = null
+      return
     }
 
-    const delta = applyResistance(
-      input.delta,
-      state.stretch,
-      maxStretch,
-      resistance,
-    )
+    if (lastTime === 0) {
+      lastTime = time
+      rafId = requestAnimationFrame(tick)
+      return
+    }
 
-    state.stretch += delta
-    state.velocity = 0
+    const dt = Math.min((time - lastTime) / 1000, 0.064)
+    lastTime = time
+
+    const result = spring.step(dt)
+    stretchX = result.x
+    stretchY = result.y
+    velocityX = result.velocityX
+    velocityY = result.velocityY
+
+    emit()
+
+    if (result.atRest) {
+      phase = 'idle'
+      rafId = null
+    } else {
+      rafId = requestAnimationFrame(tick)
+    }
+  }
+
+  function startAnimation() {
+    if (rafId !== null) return
+    lastTime = 0
+    rafId = requestAnimationFrame(tick)
+  }
+
+  function drag(input: DragInput) {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
+
+    phase = 'dragging'
+
+    // Handle deltaX
+    if ((axis === 'x' || axis === 'xy') && input.deltaX !== undefined) {
+      const dx = applyResistance(input.deltaX, stretchX, maxStretch, resistance)
+      stretchX += dx
+    }
+
+    // Handle deltaY
+    if (axis === 'y' || axis === 'xy') {
+      const rawDeltaY = input.deltaY ?? input.delta ?? 0
+      const dy = applyResistance(rawDeltaY, stretchY, maxStretch, resistance)
+      stretchY += dy
+    }
 
     emit()
   }
 
   function release() {
-    if (!state.isDragging) return
+    if (phase !== 'dragging') return
 
-    state.isDragging = false
     phase = 'spring'
-
-    spring.start(state.stretch, state.velocity)
-    lastTime = 0
-  }
-
-  function tick(time: number) {
-    if (state.isDragging) return
-
-    if (!lastTime) {
-      lastTime = time
-      return
-    }
-
-    const dt = (time - lastTime) / 1000
-    lastTime = time
-
-    const { value, velocity } = spring.step(dt)
-
-    state.stretch = value
-    state.velocity = velocity
-
-    emit()
+    spring.start(stretchX, stretchY, velocityX, velocityY)
+    startAnimation()
   }
 
   function destroy() {
-    state.isDragging = false
-    state.stretch = 0
-    state.velocity = 0
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
+    phase = 'idle'
+    stretchX = 0
+    stretchY = 0
+    velocityX = 0
+    velocityY = 0
   }
 
   return {
     drag,
     release,
-    tick,
     destroy,
   }
 }

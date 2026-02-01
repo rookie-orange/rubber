@@ -1,3 +1,4 @@
 export * from './types'
 export { createRubber } from './create-rubber'
-export { createPillDeform } from './deform/pill'
+export { Spring } from './spring'
+export { applyResistance } from './resistance'

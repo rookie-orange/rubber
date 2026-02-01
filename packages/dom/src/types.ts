@@ -1,5 +1,7 @@
 import type { Axis, SpringOptions } from '@rubber/core'
 
+export type { Axis, SpringOptions }
+
 export interface RubberElementOptions {
   /** Axis to enable: 'x', 'y', or 'xy'. Default: 'y' */
   axis?: Axis

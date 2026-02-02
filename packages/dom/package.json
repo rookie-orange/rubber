@@ -3,25 +3,28 @@
   "version": "0.0.1",
   "description": "DOM bindings for rubber elastic effects",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "tsdown",
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "@rubber/core": "workspace:*"
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "tsdown": "catalog:"
+  }
 }

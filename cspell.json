@@ -2,6 +2,7 @@
   "words": [
     "oxfmt",
     "oxlint",
+    "tsdown",
     "vitest"
   ]
 }

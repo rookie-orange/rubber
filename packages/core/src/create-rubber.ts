@@ -96,12 +96,14 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): Ru
     velocityX = result.velocityX
     velocityY = result.velocityY
 
-    emit()
-
     if (result.atRest) {
       phase = 'idle'
       rafId = null
-    } else {
+    }
+
+    emit()
+
+    if (!result.atRest) {
       rafId = requestAnimationFrame(tick)
     }
   }

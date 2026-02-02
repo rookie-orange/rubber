@@ -64,4 +64,6 @@ export interface RubberElementInstance {
   destroy: () => void
   /** Get the target element */
   element: HTMLElement
+  /** Update configuration without destroying the instance */
+  configure: (options: Partial<RubberElementOptions>) => void
 }

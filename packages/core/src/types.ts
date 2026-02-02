@@ -78,3 +78,12 @@ export type RubberOptions<Shape = unknown> =
   | EaseRubberOptions<Shape>
   | LinearRubberOptions<Shape>
   | NoneRubberOptions<Shape>
+
+/** Rubber instance returned by createRubber */
+export interface RubberInstance {
+  drag: (input: DragInput) => void
+  release: () => void
+  destroy: () => void
+  /** Update configuration without destroying the instance */
+  configure: (options: Partial<RubberOptions>) => void
+}

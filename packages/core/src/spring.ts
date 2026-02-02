@@ -12,6 +12,10 @@ export class Spring {
     this.options = options
   }
 
+  configure(options: Partial<SpringOptions>) {
+    this.options = { ...this.options, ...options }
+  }
+
   start(fromX: number, fromY: number, velX = 0, velY = 0) {
     this.valueX = fromX
     this.valueY = fromY

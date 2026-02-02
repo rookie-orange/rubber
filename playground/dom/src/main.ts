@@ -77,7 +77,7 @@ $$<HTMLInputElement>('input[name="type"]').forEach((radio) => {
   radio.addEventListener('change', () => {
     currentType = radio.value as AnimationType
     updateControlsState()
-    createInstance()
+    currentInstance?.configure({ type: currentType })
   })
 })
 
@@ -85,12 +85,12 @@ $$<HTMLInputElement>('input[name="type"]').forEach((radio) => {
 $$<HTMLInputElement>('input[name="axis"]').forEach((radio) => {
   radio.addEventListener('change', () => {
     currentAxis = radio.value as Axis
-    createInstance()
+    currentInstance?.configure({ axis: currentAxis })
   })
 })
 
 // Range sliders
-function setupSlider(id: string, update: (value: number) => void) {
+function setupSlider(id: string, update: (value: number) => void, getConfigUpdate: () => Partial<RubberElementOptions>) {
   const slider = $<HTMLInputElement>(id)
   const display = $(`${id}-value`)
 
@@ -98,13 +98,13 @@ function setupSlider(id: string, update: (value: number) => void) {
     const value = parseFloat(slider.value)
     display.textContent = String(value)
     update(value)
-    createInstance()
+    currentInstance?.configure(getConfigUpdate())
   })
 }
 
-setupSlider('stiffness', (v) => (springConfig.stiffness = v))
-setupSlider('damping', (v) => (springConfig.damping = v))
-setupSlider('duration', (v) => (tweenConfig.duration = v))
-setupSlider('maxStretch', (v) => (maxStretch = v))
-setupSlider('intensity', (v) => (intensity = v))
-setupSlider('resistance', (v) => (resistance = v))
+setupSlider('stiffness', (v) => (springConfig.stiffness = v), () => ({ spring: springConfig }))
+setupSlider('damping', (v) => (springConfig.damping = v), () => ({ spring: springConfig }))
+setupSlider('duration', (v) => (tweenConfig.duration = v), () => ({ tween: tweenConfig }))
+setupSlider('maxStretch', (v) => (maxStretch = v), () => ({ maxStretch }))
+setupSlider('intensity', (v) => (intensity = v), () => ({ intensity }))
+setupSlider('resistance', (v) => (resistance = v), () => ({ resistance }))

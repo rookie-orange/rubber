@@ -4,24 +4,20 @@ import type {
   RubberOutput,
   RubberState,
   AnimationType,
+  RubberInstance,
 } from './types'
 import { applyResistance } from './resistance'
 import { Spring } from './spring'
 
-export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
-  const {
-    axis = 'y',
-    maxStretch = 80,
-    resistance = 0.6,
-    deform,
-    onUpdate,
-  } = options
-
-  const animationType: AnimationType = options.type ?? 'none'
-  const springOptions = animationType === 'spring' && 'spring' in options
-    ? options.spring ?? { stiffness: 300, damping: 20 }
-    : { stiffness: 300, damping: 20 }
-  const tweenDuration = (animationType === 'ease' || animationType === 'linear') && 'tween' in options
+export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): RubberInstance {
+  // Mutable configuration
+  let axis = options.axis ?? 'y'
+  let maxStretch = options.maxStretch ?? 80
+  let resistance = options.resistance ?? 0.6
+  let deform = options.deform
+  let onUpdate = options.onUpdate
+  let animationType: AnimationType = options.type ?? 'none'
+  let tweenDuration = (animationType === 'ease' || animationType === 'linear') && 'tween' in options
     ? options.tween?.duration ?? 300
     : 300
 
@@ -38,6 +34,10 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
   let tweenStartY = 0
   let tweenStartTime = 0
 
+  // Spring instance with initial options
+  const springOptions = animationType === 'spring' && 'spring' in options
+    ? options.spring ?? { stiffness: 300, damping: 20 }
+    : { stiffness: 300, damping: 20 }
   const spring = new Spring(springOptions)
 
   function getProgress(): number {
@@ -202,9 +202,27 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
     velocityY = 0
   }
 
+  function configure(newOptions: Partial<RubberOptions>) {
+    if (newOptions.axis !== undefined) axis = newOptions.axis
+    if (newOptions.maxStretch !== undefined) maxStretch = newOptions.maxStretch
+    if (newOptions.resistance !== undefined) resistance = newOptions.resistance
+    if (newOptions.type !== undefined) animationType = newOptions.type
+
+    // Update spring options
+    if ('spring' in newOptions && newOptions.spring) {
+      spring.configure(newOptions.spring)
+    }
+
+    // Update tween duration
+    if ('tween' in newOptions && newOptions.tween?.duration !== undefined) {
+      tweenDuration = newOptions.tween.duration
+    }
+  }
+
   return {
     drag,
     release,
     destroy,
+    configure,
   }
 }

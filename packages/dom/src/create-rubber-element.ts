@@ -56,11 +56,13 @@ export function createRubberElement(
     throw new Error(`[RubberElement] Element not found: ${target as string}`)
   }
 
+  // Mutable configuration
+  let currentAxis = options.axis ?? 'y'
+  let currentMaxStretch = options.maxStretch ?? 80
+  let currentIntensity = options.intensity ?? 0.4
+
   const {
-    axis = 'y',
-    maxStretch = 80,
     resistance = 0.6,
-    intensity = 0.4,
     onUpdate,
     onDragStart,
     onDragEnd,
@@ -68,11 +70,11 @@ export function createRubberElement(
 
   // Build rubber options based on animation type
   const rubberOptions: RubberOptions = {
-    axis,
-    maxStretch,
+    axis: currentAxis,
+    maxStretch: currentMaxStretch,
     resistance,
     onUpdate(state) {
-      const result = calcElasticScale(state.stretchX, state.stretchY, axis, maxStretch, intensity)
+      const result = calcElasticScale(state.stretchX, state.stretchY, currentAxis, currentMaxStretch, currentIntensity)
       element.style.transform = result.transform
       element.style.transformOrigin = result.transformOrigin
 
@@ -155,5 +157,27 @@ export function createRubberElement(
     element!.style.userSelect = ''
   }
 
-  return { destroy, element }
+  function configure(newOptions: Partial<RubberElementOptions>) {
+    // Update local state
+    if (newOptions.axis !== undefined) currentAxis = newOptions.axis
+    if (newOptions.maxStretch !== undefined) currentMaxStretch = newOptions.maxStretch
+    if (newOptions.intensity !== undefined) currentIntensity = newOptions.intensity
+
+    // Build core options (only pass properties that core understands)
+    const coreOptions: Partial<RubberOptions> = {}
+    if (newOptions.axis !== undefined) coreOptions.axis = newOptions.axis
+    if (newOptions.maxStretch !== undefined) coreOptions.maxStretch = newOptions.maxStretch
+    if (newOptions.resistance !== undefined) coreOptions.resistance = newOptions.resistance
+    if (newOptions.type !== undefined) (coreOptions as { type: string }).type = newOptions.type
+    if ('spring' in newOptions && newOptions.spring) {
+      (coreOptions as { spring: unknown }).spring = newOptions.spring
+    }
+    if ('tween' in newOptions && newOptions.tween) {
+      (coreOptions as { tween: unknown }).tween = newOptions.tween
+    }
+
+    rubber.configure(coreOptions)
+  }
+
+  return { destroy, element, configure }
 }

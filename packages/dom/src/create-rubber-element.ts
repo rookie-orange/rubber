@@ -1,4 +1,4 @@
-import { createRubber, type Axis } from '@rubber/core'
+import { createRubber, type Axis, type RubberOptions } from '@rubber/core'
 import type { RubberElementOptions, RubberElementInstance } from './types'
 
 interface ElasticScaleResult {
@@ -60,23 +60,17 @@ export function createRubberElement(
     axis = 'y',
     maxStretch = 80,
     resistance = 0.6,
-    spring = { stiffness: 200, damping: 25 },
     intensity = 0.4,
     onUpdate,
     onDragStart,
     onDragEnd,
   } = options
 
-  // Apply initial styles
-  element.style.touchAction = 'none'
-  element.style.userSelect = 'none'
-  element.style.cursor = 'grab'
-
-  const rubber = createRubber({
+  // Build rubber options based on animation type
+  const rubberOptions: RubberOptions = {
     axis,
     maxStretch,
     resistance,
-    spring,
     onUpdate(state) {
       const result = calcElasticScale(state.stretchX, state.stretchY, axis, maxStretch, intensity)
       element.style.transform = result.transform
@@ -91,7 +85,26 @@ export function createRubberElement(
         phase: state.phase,
       })
     },
-  })
+  }
+
+  // Only add animation-specific config based on type
+  if (options.type === 'spring') {
+    (rubberOptions as unknown as { type: 'spring'; spring: unknown }).type = 'spring'
+    ;(rubberOptions as unknown as { spring: unknown }).spring = options.spring ?? { stiffness: 200, damping: 25 }
+  } else if (options.type === 'ease') {
+    (rubberOptions as unknown as { type: 'ease'; tween: unknown }).type = 'ease'
+    ;(rubberOptions as unknown as { tween: unknown }).tween = options.tween ?? { duration: 300 }
+  } else if (options.type === 'linear') {
+    (rubberOptions as unknown as { type: 'linear'; tween: unknown }).type = 'linear'
+    ;(rubberOptions as unknown as { tween: unknown }).tween = options.tween ?? { duration: 300 }
+  }
+
+  // Apply initial styles
+  element.style.touchAction = 'none'
+  element.style.userSelect = 'none'
+  element.style.cursor = 'grab'
+
+  const rubber = createRubber(rubberOptions)
 
   let lastX = 0
   let lastY = 0

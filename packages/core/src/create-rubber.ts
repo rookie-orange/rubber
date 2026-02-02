@@ -3,6 +3,7 @@ import type {
   DragInput,
   RubberOutput,
   RubberState,
+  AnimationType,
 } from './types'
 import { applyResistance } from './resistance'
 import { Spring } from './spring'
@@ -12,18 +13,30 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
     axis = 'y',
     maxStretch = 80,
     resistance = 0.6,
-    spring: springOptions = { stiffness: 300, damping: 20 },
     deform,
     onUpdate,
   } = options
+
+  const animationType: AnimationType = options.type ?? 'none'
+  const springOptions = animationType === 'spring' && 'spring' in options
+    ? options.spring ?? { stiffness: 300, damping: 20 }
+    : { stiffness: 300, damping: 20 }
+  const tweenDuration = (animationType === 'ease' || animationType === 'linear') && 'tween' in options
+    ? options.tween?.duration ?? 300
+    : 300
 
   let stretchX = 0
   let stretchY = 0
   let velocityX = 0
   let velocityY = 0
-  let phase: 'idle' | 'dragging' | 'spring' = 'idle'
+  let phase: 'idle' | 'dragging' | 'animating' = 'idle'
   let lastTime = 0
   let rafId: number | null = null
+
+  // Tween state
+  let tweenStartX = 0
+  let tweenStartY = 0
+  let tweenStartTime = 0
 
   const spring = new Spring(springOptions)
 
@@ -49,12 +62,25 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
     onUpdate?.(output)
   }
 
+  // Easing function: easeOutCubic
+  function easeOutCubic(t: number): number {
+    return 1 - Math.pow(1 - t, 3)
+  }
+
   function tick(time: number) {
-    if (phase !== 'spring') {
+    if (phase !== 'animating') {
       rafId = null
       return
     }
 
+    if (animationType === 'spring') {
+      tickSpring(time)
+    } else {
+      tickTween(time)
+    }
+  }
+
+  function tickSpring(time: number) {
     if (lastTime === 0) {
       lastTime = time
       rafId = requestAnimationFrame(tick)
@@ -75,6 +101,35 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
     if (result.atRest) {
       phase = 'idle'
       rafId = null
+    } else {
+      rafId = requestAnimationFrame(tick)
+    }
+  }
+
+  function tickTween(time: number) {
+    if (tweenStartTime === 0) {
+      tweenStartTime = time
+      rafId = requestAnimationFrame(tick)
+      return
+    }
+
+    const elapsed = time - tweenStartTime
+    const progress = Math.min(elapsed / tweenDuration, 1)
+    const easedProgress = animationType === 'ease' ? easeOutCubic(progress) : progress
+
+    stretchX = tweenStartX * (1 - easedProgress)
+    stretchY = tweenStartY * (1 - easedProgress)
+    velocityX = 0
+    velocityY = 0
+
+    emit()
+
+    if (progress >= 1) {
+      stretchX = 0
+      stretchY = 0
+      phase = 'idle'
+      rafId = null
+      emit()
     } else {
       rafId = requestAnimationFrame(tick)
     }
@@ -113,9 +168,26 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>) {
   function release() {
     if (phase !== 'dragging') return
 
-    phase = 'spring'
-    spring.start(stretchX, stretchY, velocityX, velocityY)
-    startAnimation()
+    if (animationType === 'spring') {
+      phase = 'animating'
+      spring.start(stretchX, stretchY, velocityX, velocityY)
+      lastTime = 0
+      startAnimation()
+    } else if (animationType === 'ease' || animationType === 'linear') {
+      phase = 'animating'
+      tweenStartX = stretchX
+      tweenStartY = stretchY
+      tweenStartTime = 0
+      startAnimation()
+    } else {
+      // type === 'none': instant reset
+      stretchX = 0
+      stretchY = 0
+      velocityX = 0
+      velocityY = 0
+      phase = 'idle'
+      emit()
+    }
   }
 
   function destroy() {

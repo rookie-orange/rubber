@@ -18,7 +18,7 @@ export interface RubberState {
   velocityX: number
   velocityY: number
   progress: number
-  phase: 'idle' | 'dragging' | 'spring'
+  phase: 'idle' | 'dragging' | 'animating'
 }
 
 export interface RubberOutput<Shape = unknown> extends RubberState {
@@ -31,11 +31,50 @@ export interface SpringOptions {
   mass?: number
 }
 
-export interface RubberOptions<Shape = unknown> {
+/** Animation type for release behavior */
+export type AnimationType = 'spring' | 'ease' | 'linear' | 'none'
+
+/** Options for ease/linear animations */
+export interface TweenOptions {
+  /** Animation duration in milliseconds. Default: 300 */
+  duration?: number
+}
+
+/** Base options shared by all animation types */
+export interface BaseRubberOptions<Shape = unknown> {
   axis?: Axis
   maxStretch?: number
   resistance?: number
-  spring?: SpringOptions
   deform?: (state: RubberState) => Shape
   onUpdate?: (output: RubberOutput<Shape>) => void
 }
+
+/** Options when using spring animation */
+export interface SpringRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+  type: 'spring'
+  spring?: SpringOptions
+}
+
+/** Options when using ease animation */
+export interface EaseRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+  type: 'ease'
+  tween?: TweenOptions
+}
+
+/** Options when using linear animation */
+export interface LinearRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+  type: 'linear'
+  tween?: TweenOptions
+}
+
+/** Options when using no animation (instant reset) */
+export interface NoneRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+  type?: 'none'
+}
+
+/** Combined options type */
+export type RubberOptions<Shape = unknown> =
+  | SpringRubberOptions<Shape>
+  | EaseRubberOptions<Shape>
+  | LinearRubberOptions<Shape>
+  | NoneRubberOptions<Shape>

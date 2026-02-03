@@ -42,6 +42,8 @@ export interface TweenOptions {
 
 /** Base options shared by all animation types */
 export interface BaseRubberOptions<Shape = unknown> {
+  /** Whether the rubber effect is enabled. Default: true */
+  enabled?: boolean
   axis?: Axis
   maxStretch?: number
   resistance?: number

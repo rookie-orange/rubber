@@ -11,6 +11,7 @@ import { Spring } from './spring'
 
 export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): RubberInstance {
   // Mutable configuration
+  let enabled = options.enabled ?? true
   let axis = options.axis ?? 'y'
   let maxStretch = options.maxStretch ?? 80
   let resistance = options.resistance ?? 0.6
@@ -144,6 +145,8 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): Ru
   }
 
   function drag(input: DragInput) {
+    if (!enabled) return
+
     if (rafId !== null) {
       cancelAnimationFrame(rafId)
       rafId = null
@@ -205,6 +208,7 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): Ru
   }
 
   function configure(newOptions: Partial<RubberOptions>) {
+    if (newOptions.enabled !== undefined) enabled = newOptions.enabled
     if (newOptions.axis !== undefined) axis = newOptions.axis
     if (newOptions.maxStretch !== undefined) maxStretch = newOptions.maxStretch
     if (newOptions.resistance !== undefined) resistance = newOptions.resistance

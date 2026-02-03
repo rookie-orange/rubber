@@ -8,6 +8,7 @@ const $$ = <T extends HTMLElement>(selector: string) => document.querySelectorAl
 let currentInstance: ReturnType<typeof createRubberElement> | null = null
 let currentType: AnimationType = 'spring'
 let currentAxis: Axis = 'xy'
+let enabled = true
 let maxStretch = 120
 let resistance = 0.6
 let intensity = 0.4
@@ -16,6 +17,7 @@ const tweenConfig = { duration: 300 }
 
 function getConfig(): RubberElementOptions {
   const base = {
+    enabled,
     axis: currentAxis,
     maxStretch,
     resistance,
@@ -87,6 +89,12 @@ $$<HTMLInputElement>('input[name="axis"]').forEach((radio) => {
     currentAxis = radio.value as Axis
     currentInstance?.configure({ axis: currentAxis })
   })
+})
+
+// Enabled toggle
+$<HTMLInputElement>('enabled').addEventListener('change', (e) => {
+  enabled = (e.target as HTMLInputElement).checked
+  currentInstance?.configure({ enabled })
 })
 
 // Range sliders

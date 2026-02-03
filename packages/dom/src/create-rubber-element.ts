@@ -70,6 +70,7 @@ export function createRubberElement(
 
   // Build rubber options based on animation type
   const rubberOptions: RubberOptions = {
+    enabled: options.enabled,
     axis: currentAxis,
     maxStretch: currentMaxStretch,
     resistance,
@@ -165,6 +166,7 @@ export function createRubberElement(
 
     // Build core options (only pass properties that core understands)
     const coreOptions: Partial<RubberOptions> = {}
+    if (newOptions.enabled !== undefined) coreOptions.enabled = newOptions.enabled
     if (newOptions.axis !== undefined) coreOptions.axis = newOptions.axis
     if (newOptions.maxStretch !== undefined) coreOptions.maxStretch = newOptions.maxStretch
     if (newOptions.resistance !== undefined) coreOptions.resistance = newOptions.resistance

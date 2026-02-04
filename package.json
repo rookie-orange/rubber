@@ -21,8 +21,10 @@
     "oxlint-tsgolint": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
+    "unplugin-vue": "catalog:",
     "vite": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "vue-tsc": "catalog:"
   },
   "packageManager": "pnpm@10.22.0"
 }

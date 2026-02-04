@@ -1,0 +1,31 @@
+{
+  "name": "@rubber/vue",
+  "version": "0.0.1",
+  "description": "Vue bindings for rubber elastic effects",
+  "keywords": [],
+  "license": "MIT",
+  "author": "",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch"
+  },
+  "dependencies": {
+    "@rubber/dom": "workspace:*",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:"
+  }
+}

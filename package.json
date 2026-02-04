@@ -2,8 +2,11 @@
   "name": "rubber",
   "version": "0.0.1",
   "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "",
   "scripts": {
-    "dev": "turbo dev --filter=@rubber/playground-dom",
+    "dev": "turbo dev --filter=./playground/* --filter='./packages/*'",
     "build": "turbo build --filter='./packages/*'",
     "test": "vitest",
     "lint": "oxlint",
@@ -11,10 +14,6 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "packageManager": "pnpm@10.22.0",
   "devDependencies": {
     "@types/node": "catalog:",
     "oxfmt": "catalog:",
@@ -24,5 +23,6 @@
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
-  }
+  },
+  "packageManager": "pnpm@10.22.0"
 }

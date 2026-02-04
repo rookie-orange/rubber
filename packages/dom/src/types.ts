@@ -1,4 +1,9 @@
-import type { Axis, SpringOptions, AnimationType, TweenOptions } from '@rubber/core'
+import type {
+  Axis,
+  SpringOptions,
+  AnimationType,
+  TweenOptions,
+} from '@rubber/core'
 
 export type { Axis, SpringOptions, AnimationType, TweenOptions }
 

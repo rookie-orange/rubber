@@ -9,7 +9,9 @@ import type {
 import { applyResistance } from './resistance'
 import { Spring } from './spring'
 
-export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): RubberInstance {
+export function createRubber<Shape = unknown>(
+  options: RubberOptions<Shape>,
+): RubberInstance {
   // Mutable configuration
   let enabled = options.enabled ?? true
   let axis = options.axis ?? 'y'
@@ -18,9 +20,11 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): Ru
   let deform = options.deform
   let onUpdate = options.onUpdate
   let animationType: AnimationType = options.type ?? 'none'
-  let tweenDuration = (animationType === 'ease' || animationType === 'linear') && 'tween' in options
-    ? options.tween?.duration ?? 300
-    : 300
+  let tweenDuration =
+    (animationType === 'ease' || animationType === 'linear') &&
+    'tween' in options
+      ? (options.tween?.duration ?? 300)
+      : 300
 
   let stretchX = 0
   let stretchY = 0
@@ -36,9 +40,10 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): Ru
   let tweenStartTime = 0
 
   // Spring instance with initial options
-  const springOptions = animationType === 'spring' && 'spring' in options
-    ? options.spring ?? { stiffness: 300, damping: 20 }
-    : { stiffness: 300, damping: 20 }
+  const springOptions =
+    animationType === 'spring' && 'spring' in options
+      ? (options.spring ?? { stiffness: 300, damping: 20 })
+      : { stiffness: 300, damping: 20 }
   const spring = new Spring(springOptions)
 
   function getProgress(): number {
@@ -118,7 +123,8 @@ export function createRubber<Shape = unknown>(options: RubberOptions<Shape>): Ru
 
     const elapsed = time - tweenStartTime
     const progress = Math.min(elapsed / tweenDuration, 1)
-    const easedProgress = animationType === 'ease' ? easeOutCubic(progress) : progress
+    const easedProgress =
+      animationType === 'ease' ? easeOutCubic(progress) : progress
 
     stretchX = tweenStartX * (1 - easedProgress)
     stretchY = tweenStartY * (1 - easedProgress)

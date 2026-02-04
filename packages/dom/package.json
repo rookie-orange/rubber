@@ -2,6 +2,12 @@
   "name": "@rubber/dom",
   "version": "0.0.1",
   "description": "DOM bindings for rubber elastic effects",
+  "keywords": [],
+  "license": "MIT",
+  "author": "",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
@@ -11,9 +17,6 @@
       "import": "./dist/index.mjs"
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch"
@@ -21,9 +24,6 @@
   "dependencies": {
     "@rubber/core": "workspace:*"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "tsdown": "catalog:"
   }

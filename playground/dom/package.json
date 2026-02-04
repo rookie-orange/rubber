@@ -1,7 +1,7 @@
 {
   "name": "@rubber/playground-dom",
-  "private": true,
   "version": "0.0.1",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,9 +12,9 @@
     "@rubber/dom": "workspace:*"
   },
   "devDependencies": {
-    "vite": "catalog:",
-    "tailwindcss": "catalog:",
     "@tailwindcss/vite": "catalog:",
-    "daisyui": "catalog:"
+    "daisyui": "catalog:",
+    "tailwindcss": "catalog:",
+    "vite": "catalog:"
   }
 }

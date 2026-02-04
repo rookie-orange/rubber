@@ -13,7 +13,7 @@ function calcElasticScale(
   stretchY: number,
   axis: Axis,
   maxStretch: number,
-  intensity: number
+  intensity: number,
 ): ElasticScaleResult {
   let scaleX = 1
   let scaleY = 1
@@ -46,11 +46,12 @@ function calcElasticScale(
  */
 export function createRubberElement(
   target: HTMLElement | string,
-  options: RubberElementOptions = {}
+  options: RubberElementOptions = {},
 ): RubberElementInstance {
-  const element = typeof target === 'string'
-    ? document.querySelector<HTMLElement>(target)
-    : target
+  const element =
+    typeof target === 'string'
+      ? document.querySelector<HTMLElement>(target)
+      : target
 
   if (!element) {
     throw new Error(`[RubberElement] Element not found: ${target as string}`)
@@ -61,12 +62,7 @@ export function createRubberElement(
   let currentMaxStretch = options.maxStretch ?? 80
   let currentIntensity = options.intensity ?? 0.4
 
-  const {
-    resistance = 0.6,
-    onUpdate,
-    onDragStart,
-    onDragEnd,
-  } = options
+  const { resistance = 0.6, onUpdate, onDragStart, onDragEnd } = options
 
   // Build rubber options based on animation type
   const rubberOptions: RubberOptions = {
@@ -75,7 +71,13 @@ export function createRubberElement(
     maxStretch: currentMaxStretch,
     resistance,
     onUpdate(state) {
-      const result = calcElasticScale(state.stretchX, state.stretchY, currentAxis, currentMaxStretch, currentIntensity)
+      const result = calcElasticScale(
+        state.stretchX,
+        state.stretchY,
+        currentAxis,
+        currentMaxStretch,
+        currentIntensity,
+      )
       element.style.transform = result.transform
       element.style.transformOrigin = result.transformOrigin
 
@@ -92,14 +94,22 @@ export function createRubberElement(
 
   // Only add animation-specific config based on type
   if (options.type === 'spring') {
-    (rubberOptions as unknown as { type: 'spring'; spring: unknown }).type = 'spring'
-    ;(rubberOptions as unknown as { spring: unknown }).spring = options.spring ?? { stiffness: 200, damping: 25 }
+    ;(rubberOptions as unknown as { type: 'spring'; spring: unknown }).type =
+      'spring'
+    ;(rubberOptions as unknown as { spring: unknown }).spring =
+      options.spring ?? { stiffness: 200, damping: 25 }
   } else if (options.type === 'ease') {
-    (rubberOptions as unknown as { type: 'ease'; tween: unknown }).type = 'ease'
-    ;(rubberOptions as unknown as { tween: unknown }).tween = options.tween ?? { duration: 300 }
+    ;(rubberOptions as unknown as { type: 'ease'; tween: unknown }).type =
+      'ease'
+    ;(rubberOptions as unknown as { tween: unknown }).tween = options.tween ?? {
+      duration: 300,
+    }
   } else if (options.type === 'linear') {
-    (rubberOptions as unknown as { type: 'linear'; tween: unknown }).type = 'linear'
-    ;(rubberOptions as unknown as { tween: unknown }).tween = options.tween ?? { duration: 300 }
+    ;(rubberOptions as unknown as { type: 'linear'; tween: unknown }).type =
+      'linear'
+    ;(rubberOptions as unknown as { tween: unknown }).tween = options.tween ?? {
+      duration: 300,
+    }
   }
 
   // Apply initial styles
@@ -161,21 +171,27 @@ export function createRubberElement(
   function configure(newOptions: Partial<RubberElementOptions>) {
     // Update local state
     if (newOptions.axis !== undefined) currentAxis = newOptions.axis
-    if (newOptions.maxStretch !== undefined) currentMaxStretch = newOptions.maxStretch
-    if (newOptions.intensity !== undefined) currentIntensity = newOptions.intensity
+    if (newOptions.maxStretch !== undefined)
+      currentMaxStretch = newOptions.maxStretch
+    if (newOptions.intensity !== undefined)
+      currentIntensity = newOptions.intensity
 
     // Build core options (only pass properties that core understands)
     const coreOptions: Partial<RubberOptions> = {}
-    if (newOptions.enabled !== undefined) coreOptions.enabled = newOptions.enabled
+    if (newOptions.enabled !== undefined)
+      coreOptions.enabled = newOptions.enabled
     if (newOptions.axis !== undefined) coreOptions.axis = newOptions.axis
-    if (newOptions.maxStretch !== undefined) coreOptions.maxStretch = newOptions.maxStretch
-    if (newOptions.resistance !== undefined) coreOptions.resistance = newOptions.resistance
-    if (newOptions.type !== undefined) (coreOptions as { type: string }).type = newOptions.type
+    if (newOptions.maxStretch !== undefined)
+      coreOptions.maxStretch = newOptions.maxStretch
+    if (newOptions.resistance !== undefined)
+      coreOptions.resistance = newOptions.resistance
+    if (newOptions.type !== undefined)
+      (coreOptions as { type: string }).type = newOptions.type
     if ('spring' in newOptions && newOptions.spring) {
-      (coreOptions as { spring: unknown }).spring = newOptions.spring
+      ;(coreOptions as { spring: unknown }).spring = newOptions.spring
     }
     if ('tween' in newOptions && newOptions.tween) {
-      (coreOptions as { tween: unknown }).tween = newOptions.tween
+      ;(coreOptions as { tween: unknown }).tween = newOptions.tween
     }
 
     rubber.configure(coreOptions)

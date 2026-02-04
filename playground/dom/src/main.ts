@@ -1,8 +1,15 @@
-import { createRubberElement, type RubberElementOptions, type Axis, type AnimationType } from '@rubber/dom'
+import {
+  createRubberElement,
+  type RubberElementOptions,
+  type Axis,
+  type AnimationType,
+} from '@rubber/dom'
 
 // DOM Elements
-const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
-const $$ = <T extends HTMLElement>(selector: string) => document.querySelectorAll<T>(selector)
+const $ = <T extends HTMLElement>(id: string) =>
+  document.getElementById(id) as T
+const $$ = <T extends HTMLElement>(selector: string) =>
+  document.querySelectorAll<T>(selector)
 
 // State
 let currentInstance: ReturnType<typeof createRubberElement> | null = null
@@ -98,7 +105,11 @@ $<HTMLInputElement>('enabled').addEventListener('change', (e) => {
 })
 
 // Range sliders
-function setupSlider(id: string, update: (value: number) => void, getConfigUpdate: () => Partial<RubberElementOptions>) {
+function setupSlider(
+  id: string,
+  update: (value: number) => void,
+  getConfigUpdate: () => Partial<RubberElementOptions>,
+) {
   const slider = $<HTMLInputElement>(id)
   const display = $(`${id}-value`)
 
@@ -110,9 +121,33 @@ function setupSlider(id: string, update: (value: number) => void, getConfigUpdat
   })
 }
 
-setupSlider('stiffness', (v) => (springConfig.stiffness = v), () => ({ spring: springConfig }))
-setupSlider('damping', (v) => (springConfig.damping = v), () => ({ spring: springConfig }))
-setupSlider('duration', (v) => (tweenConfig.duration = v), () => ({ tween: tweenConfig }))
-setupSlider('maxStretch', (v) => (maxStretch = v), () => ({ maxStretch }))
-setupSlider('intensity', (v) => (intensity = v), () => ({ intensity }))
-setupSlider('resistance', (v) => (resistance = v), () => ({ resistance }))
+setupSlider(
+  'stiffness',
+  (v) => (springConfig.stiffness = v),
+  () => ({ spring: springConfig }),
+)
+setupSlider(
+  'damping',
+  (v) => (springConfig.damping = v),
+  () => ({ spring: springConfig }),
+)
+setupSlider(
+  'duration',
+  (v) => (tweenConfig.duration = v),
+  () => ({ tween: tweenConfig }),
+)
+setupSlider(
+  'maxStretch',
+  (v) => (maxStretch = v),
+  () => ({ maxStretch }),
+)
+setupSlider(
+  'intensity',
+  (v) => (intensity = v),
+  () => ({ intensity }),
+)
+setupSlider(
+  'resistance',
+  (v) => (resistance = v),
+  () => ({ resistance }),
+)

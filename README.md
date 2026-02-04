@@ -13,10 +13,10 @@ A lightweight JavaScript library for creating elastic/rubber-band drag effects w
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
+| Package        | Description                 |
+| -------------- | --------------------------- |
 | `@rubber/core` | Core elastic physics engine |
-| `@rubber/dom` | DOM element bindings |
+| `@rubber/dom`  | DOM element bindings        |
 
 ## Installation
 
@@ -58,10 +58,10 @@ const rubber = createRubberElement(element, {
 import { createRubber } from '@rubber/core'
 
 const rubber = createRubber({
-  axis: 'y',           // 'x' | 'y' | 'xy'
-  maxStretch: 80,      // Maximum stretch distance in pixels
-  resistance: 0.6,     // Resistance factor (0-1)
-  type: 'spring',      // 'spring' | 'ease' | 'linear' | 'none'
+  axis: 'y', // 'x' | 'y' | 'xy'
+  maxStretch: 80, // Maximum stretch distance in pixels
+  resistance: 0.6, // Resistance factor (0-1)
+  type: 'spring', // 'spring' | 'ease' | 'linear' | 'none'
   spring: {
     stiffness: 300,
     damping: 20,

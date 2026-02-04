@@ -52,25 +52,33 @@ export interface BaseRubberOptions<Shape = unknown> {
 }
 
 /** Options when using spring animation */
-export interface SpringRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+export interface SpringRubberOptions<
+  Shape = unknown,
+> extends BaseRubberOptions<Shape> {
   type: 'spring'
   spring?: SpringOptions
 }
 
 /** Options when using ease animation */
-export interface EaseRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+export interface EaseRubberOptions<
+  Shape = unknown,
+> extends BaseRubberOptions<Shape> {
   type: 'ease'
   tween?: TweenOptions
 }
 
 /** Options when using linear animation */
-export interface LinearRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+export interface LinearRubberOptions<
+  Shape = unknown,
+> extends BaseRubberOptions<Shape> {
   type: 'linear'
   tween?: TweenOptions
 }
 
 /** Options when using no animation (instant reset) */
-export interface NoneRubberOptions<Shape = unknown> extends BaseRubberOptions<Shape> {
+export interface NoneRubberOptions<
+  Shape = unknown,
+> extends BaseRubberOptions<Shape> {
   type?: 'none'
 }
 

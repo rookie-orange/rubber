@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": null,
+  "plugins": ["import"],
   "categories": {},
   "rules": {},
   "settings": {
@@ -36,5 +36,5 @@
     "builtin": true
   },
   "globals": {},
-  "ignorePatterns": []
+  "ignorePatterns": ["dist/**", "coverage/**", "vendor/**", "test/snapshots/**"]
 }

@@ -23,27 +23,19 @@ const springConfig = { stiffness: 200, damping: 25 }
 const tweenConfig = { duration: 300 }
 
 function getConfig(): RubberElementOptions {
-  const base = {
+  return {
     enabled,
     axis: currentAxis,
     maxStretch,
     resistance,
     intensity,
+    type: currentType,
+    spring: springConfig,
+    tween: tweenConfig,
     onUpdate(state: { phase: string; progress: number }) {
       $('state-phase').textContent = state.phase
       $('state-progress').textContent = `${Math.round(state.progress * 100)}%`
     },
-  }
-
-  switch (currentType) {
-    case 'spring':
-      return { ...base, type: 'spring', spring: springConfig }
-    case 'ease':
-      return { ...base, type: 'ease', tween: tweenConfig }
-    case 'linear':
-      return { ...base, type: 'linear', tween: tweenConfig }
-    default:
-      return { ...base, type: 'none' }
   }
 }
 

@@ -78,22 +78,12 @@ const VueRubber = defineComponent<VueRubberProps>(
     }))
 
     function buildOptions(): RubberElementOptions {
-      const config = mergedConfig.value
-      const options: RubberElementOptions = {
-        ...config,
+      return {
+        ...mergedConfig.value,
         onUpdate: (state) => emit('update', state),
         onDragStart: () => emit('dragStart'),
         onDragEnd: () => emit('dragEnd'),
       }
-
-      if (config.type === 'spring') {
-        return { ...options, type: 'spring', spring: config.spring }
-      } else if (config.type === 'ease') {
-        return { ...options, type: 'ease', tween: config.tween }
-      } else if (config.type === 'linear') {
-        return { ...options, type: 'linear', tween: config.tween }
-      }
-      return { ...options, type: 'none' }
     }
 
     function initRubber() {

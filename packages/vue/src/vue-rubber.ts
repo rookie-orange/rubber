@@ -52,6 +52,12 @@ type VueRubberProviderProps = Omit<VueRubberProps, 'as'>
 const RUBBER_INJECTION_KEY: InjectionKey<ComputedRef<VueRubberProviderProps>> =
   Symbol('vue-rubber')
 
+function omitUndefined<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined),
+  ) as Partial<T>
+}
+
 const VueRubberProvider = defineComponent<VueRubberProviderProps>(
   (props, { slots }) => {
     const reactiveProps = computed(() => ({ ...props }))
@@ -59,7 +65,20 @@ const VueRubberProvider = defineComponent<VueRubberProviderProps>(
 
     return () => slots.default?.()
   },
-  { name: 'VueRubberProvider', inheritAttrs: false },
+  {
+    name: 'VueRubberProvider',
+    inheritAttrs: false,
+    props: [
+      'axis',
+      'enabled',
+      'intensity',
+      'maxStretch',
+      'resistance',
+      'spring',
+      'tween',
+      'type',
+    ],
+  },
 )
 
 const VueRubber = defineComponent<VueRubberProps>(
@@ -72,9 +91,10 @@ const VueRubber = defineComponent<VueRubberProps>(
       const { as: _, ...rest } = props
       return rest
     })
+
     const mergedConfig = computed(() => ({
       ...rubberContext?.value,
-      ...delegatedProps.value,
+      ...omitUndefined(delegatedProps.value),
     }))
 
     function buildOptions(): RubberElementOptions {
@@ -114,9 +134,24 @@ const VueRubber = defineComponent<VueRubberProps>(
       getInstance: () => rubberInstance.value,
     })
 
-    return () => h(props.as ?? 'div', { ref: rubberRef, ...attrs }, slots.default?.())
+    return () =>
+      h(props.as ?? 'div', { ref: rubberRef, ...attrs }, slots.default?.())
   },
-  { name: 'VueRubber', inheritAttrs: false },
+  {
+    name: 'VueRubber',
+    inheritAttrs: true,
+    props: [
+      'as',
+      'axis',
+      'enabled',
+      'intensity',
+      'maxStretch',
+      'resistance',
+      'spring',
+      'tween',
+      'type',
+    ],
+  },
 )
 
 export { VueRubber, VueRubberProvider }

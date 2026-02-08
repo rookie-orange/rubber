@@ -3,7 +3,7 @@ import { VueRubber, VueRubberProvider } from '@rubber/vue'
 </script>
 
 <template>
-  <div class="h-screen flex justify-center items-center">
+  <div class="flex h-screen items-center justify-center">
     <VueRubberProvider
       axis="y"
       type="spring"
@@ -13,13 +13,13 @@ import { VueRubber, VueRubberProvider } from '@rubber/vue'
       }"
     >
       <VueRubber
-        class="size-48 rounded-full bg-orange-500 flex items-center justify-center"
+        class="flex size-48 items-center justify-center rounded-full bg-orange-500"
       >
         Drag
       </VueRubber>
 
       <VueRubber
-        class="size-48 rounded-full bg-sky-500 flex items-center justify-center"
+        class="flex size-48 items-center justify-center rounded-full bg-sky-500"
         type="ease"
         axis="xy"
       >

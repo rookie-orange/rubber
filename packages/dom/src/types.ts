@@ -9,7 +9,9 @@ export type { Axis, SpringOptions, AnimationType, TweenOptions }
 
 /** Base options shared by all animation types */
 interface BaseRubberElementOptions {
-  /** Whether the rubber effect is enabled. Default: true */
+  /**
+   * Whether the rubber effect is enabled. Default: true
+   */
   enabled?: boolean
   /** Axis to enable: 'x', 'y', or 'xy'. Default: 'y' */
   axis?: Axis

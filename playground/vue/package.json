@@ -14,11 +14,11 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
     "daisyui": "catalog:",
     "tailwindcss": "catalog:",
     "unplugin-vue": "catalog:",
     "vite": "catalog:",
-    "vue-tsc": "catalog:",
-    "@vitejs/plugin-vue": "catalog:"
+    "vue-tsc": "catalog:"
   }
 }

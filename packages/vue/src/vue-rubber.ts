@@ -14,7 +14,6 @@ import {
   ref,
   shallowRef,
   watch,
-  type ComputedRef,
   type InjectionKey,
 } from 'vue'
 
@@ -49,7 +48,7 @@ interface VueRubberProps {
 
 type VueRubberProviderProps = Omit<VueRubberProps, 'as'>
 
-const RUBBER_INJECTION_KEY: InjectionKey<ComputedRef<VueRubberProviderProps>> =
+const RUBBER_INJECTION_KEY: InjectionKey<VueRubberProviderProps> =
   Symbol('vue-rubber')
 
 function omitUndefined<T extends object>(obj: T): Partial<T> {
@@ -60,8 +59,7 @@ function omitUndefined<T extends object>(obj: T): Partial<T> {
 
 const VueRubberProvider = defineComponent<VueRubberProviderProps>(
   (props, { slots }) => {
-    const reactiveProps = computed(() => ({ ...props }))
-    provide(RUBBER_INJECTION_KEY, reactiveProps)
+    provide(RUBBER_INJECTION_KEY, props)
 
     return () => slots.default?.()
   },
@@ -93,7 +91,7 @@ const VueRubber = defineComponent<VueRubberProps>(
     })
 
     const mergedConfig = computed(() => ({
-      ...rubberContext?.value,
+      ...rubberContext,
       ...omitUndefined(delegatedProps.value),
     }))
 
@@ -156,4 +154,4 @@ const VueRubber = defineComponent<VueRubberProps>(
 
 export { VueRubber, VueRubberProvider }
 
-export type { VueRubberProps }
+export type { VueRubberProps, VueRubberProviderProps }

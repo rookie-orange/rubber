@@ -10,7 +10,7 @@
   <body class="bg-base-200 h-screen p-8">
     <div
       id="app"
-      class="max-w-5xl mx-auto h-full items-center justify-center flex flex-col"
+      class="mx-auto flex h-full max-w-5xl flex-col items-center justify-center"
     >
       <div class="card card-side bg-base-100 shadow-xl">
         <div class="card-body w-80">
@@ -69,7 +69,7 @@
             <label class="label"
               ><span class="label-text font-medium">Animation Type</span></label
             >
-            <div class="flex gap-4 flex-wrap">
+            <div class="flex flex-wrap gap-4">
               <label class="label cursor-pointer gap-2">
                 <input
                   type="radio"
@@ -113,8 +113,8 @@
           <!-- Spring Controls (only enabled when type is 'spring') -->
           <div id="spring-controls">
             <!-- Stiffness -->
-            <div class="flex items-center gap-3 mb-3">
-              <span class="text-sm w-20 shrink-0">Stiffness</span>
+            <div class="mb-3 flex items-center gap-3">
+              <span class="w-20 shrink-0 text-sm">Stiffness</span>
               <input
                 type="range"
                 id="stiffness"
@@ -124,15 +124,15 @@
                 class="range range-primary range-xs flex-1"
               />
               <span
-                class="text-sm w-8 text-right font-mono"
+                class="w-8 text-right font-mono text-sm"
                 id="stiffness-value"
                 >200</span
               >
             </div>
 
             <!-- Damping -->
-            <div class="flex items-center gap-3 mb-3">
-              <span class="text-sm w-20 shrink-0">Damping</span>
+            <div class="mb-3 flex items-center gap-3">
+              <span class="w-20 shrink-0 text-sm">Damping</span>
               <input
                 type="range"
                 id="damping"
@@ -141,7 +141,7 @@
                 value="25"
                 class="range range-primary range-xs flex-1"
               />
-              <span class="text-sm w-8 text-right font-mono" id="damping-value"
+              <span class="w-8 text-right font-mono text-sm" id="damping-value"
                 >25</span
               >
             </div>
@@ -150,8 +150,8 @@
           <!-- Tween Controls (only enabled when type is 'ease' or 'linear') -->
           <div id="tween-controls" style="opacity: 0.4; pointer-events: none">
             <!-- Duration -->
-            <div class="flex items-center gap-3 mb-3">
-              <span class="text-sm w-20 shrink-0">Duration</span>
+            <div class="mb-3 flex items-center gap-3">
+              <span class="w-20 shrink-0 text-sm">Duration</span>
               <input
                 type="range"
                 id="duration"
@@ -161,15 +161,15 @@
                 value="300"
                 class="range range-primary range-xs flex-1"
               />
-              <span class="text-sm w-8 text-right font-mono" id="duration-value"
+              <span class="w-8 text-right font-mono text-sm" id="duration-value"
                 >300</span
               >
             </div>
           </div>
 
           <!-- Max Stretch -->
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-sm w-20 shrink-0">Stretch</span>
+          <div class="mb-3 flex items-center gap-3">
+            <span class="w-20 shrink-0 text-sm">Stretch</span>
             <input
               type="range"
               id="maxStretch"
@@ -178,14 +178,14 @@
               value="120"
               class="range range-primary range-xs flex-1"
             />
-            <span class="text-sm w-8 text-right font-mono" id="maxStretch-value"
+            <span class="w-8 text-right font-mono text-sm" id="maxStretch-value"
               >120</span
             >
           </div>
 
           <!-- Intensity -->
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-sm w-20 shrink-0">Intensity</span>
+          <div class="mb-3 flex items-center gap-3">
+            <span class="w-20 shrink-0 text-sm">Intensity</span>
             <input
               type="range"
               id="intensity"
@@ -195,14 +195,14 @@
               value="0.4"
               class="range range-primary range-xs flex-1"
             />
-            <span class="text-sm w-8 text-right font-mono" id="intensity-value"
+            <span class="w-8 text-right font-mono text-sm" id="intensity-value"
               >0.4</span
             >
           </div>
 
           <!-- Resistance -->
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-sm w-20 shrink-0">Resistance</span>
+          <div class="mb-3 flex items-center gap-3">
+            <span class="w-20 shrink-0 text-sm">Resistance</span>
             <input
               type="range"
               id="resistance"
@@ -212,7 +212,7 @@
               value="0.6"
               class="range range-primary range-xs flex-1"
             />
-            <span class="text-sm w-8 text-right font-mono" id="resistance-value"
+            <span class="w-8 text-right font-mono text-sm" id="resistance-value"
               >0.6</span
             >
           </div>
@@ -233,11 +233,11 @@
 
         <!-- Preview Area -->
         <div
-          class="w-80 h-full flex flex-col justify-center items-center bg-base-300"
+          class="bg-base-300 flex h-full w-80 flex-col items-center justify-center"
         >
           <div
             id="rubber-element"
-            class="w-24 h-64 flex justify-center items-center bg-primary text-primary-content rounded-full font-bold text-lg"
+            class="bg-primary text-primary-content flex h-64 w-24 items-center justify-center rounded-full text-lg font-bold"
           >
             Drag
           </div>

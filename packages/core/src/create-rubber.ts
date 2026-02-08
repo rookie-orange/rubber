@@ -6,6 +6,7 @@ import type {
   AnimationType,
   RubberInstance,
 } from './types'
+
 import { applyResistance } from './resistance'
 import { Spring } from './spring'
 

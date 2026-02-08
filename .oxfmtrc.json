@@ -3,5 +3,12 @@
   "printWidth": 80,
   "semi": false,
   "singleQuote": true,
+  "experimentalSortImports": {
+    "order": "asc"
+  },
+  "experimentalTailwindcss": {
+    "functions": ["clsx", "cn", "cva", "tw"]
+  },
+  "experimentalSortPackageJson": true,
   "ignorePatterns": []
 }

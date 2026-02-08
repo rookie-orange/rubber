@@ -1,4 +1,5 @@
 import { createRubber, type Axis, type RubberOptions } from '@rubber/core'
+
 import type { RubberElementOptions, RubberElementInstance } from './types'
 
 interface ElasticScaleResult {

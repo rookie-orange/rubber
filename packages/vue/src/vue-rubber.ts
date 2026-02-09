@@ -17,36 +17,7 @@ import {
   type InjectionKey,
 } from 'vue'
 
-type AsTag =
-  | 'a'
-  | 'button'
-  | 'div'
-  | 'form'
-  | 'h2'
-  | 'h3'
-  | 'label'
-  | 'li'
-  | 'nav'
-  | 'ol'
-  | 'p'
-  | 'span'
-  | 'svg'
-  | 'ul'
-  | ({} & string) // any other string
-
-interface VueRubberProps {
-  as?: AsTag
-  enabled?: boolean
-  axis?: 'x' | 'y' | 'xy'
-  maxStretch?: number
-  resistance?: number
-  intensity?: number
-  type?: 'spring' | 'ease' | 'linear' | 'none'
-  spring?: { stiffness: number; damping: number; mass?: number }
-  tween?: { duration?: number }
-}
-
-type VueRubberProviderProps = Omit<VueRubberProps, 'as'>
+import type { VueRubberProps, VueRubberProviderProps } from './type'
 
 const RUBBER_INJECTION_KEY: InjectionKey<VueRubberProviderProps> =
   Symbol('vue-rubber')

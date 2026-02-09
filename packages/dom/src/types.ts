@@ -7,6 +7,8 @@ import type {
 
 export type { Axis, SpringOptions, AnimationType, TweenOptions }
 
+export type { BaseRubberElementOptions }
+
 /** Base options shared by all animation types */
 interface BaseRubberElementOptions {
   /**

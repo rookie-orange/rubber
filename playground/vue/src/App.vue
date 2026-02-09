@@ -92,9 +92,11 @@ async function copyConfig() {
 </script>
 
 <template>
-  <div class="flex h-screen">
-    <!-- Left: Configuration Panel -->
-    <div class="border-border w-80 shrink-0 overflow-y-auto border-r p-6">
+  <div class="flex h-screen flex-col-reverse lg:flex-row">
+    <!-- Configuration Panel (bottom on mobile, left on desktop) -->
+    <div
+      class="border-border h-[40vh] w-full shrink-0 overflow-y-auto border-t p-4 lg:h-auto lg:w-80 lg:border-t-0 lg:border-r lg:p-6"
+    >
       <RubberConfigPanel
         v-model:enabled="enabled"
         v-model:axis="axis"
@@ -116,8 +118,10 @@ async function copyConfig() {
       </div>
     </div>
 
-    <!-- Right: Preview -->
-    <div class="bg-secondary relative flex flex-1 items-center justify-center">
+    <!-- Preview (top on mobile, right on desktop) -->
+    <div
+      class="bg-secondary relative flex min-h-[50vh] flex-1 items-center justify-center lg:min-h-0"
+    >
       <!-- Top right buttons -->
       <div class="absolute top-4 right-4 flex gap-2">
         <Dialog>

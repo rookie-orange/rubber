@@ -2,6 +2,15 @@
 import { computed, ref } from 'vue'
 import { RubberConfigPanel, ElementConfigPanel } from './components/widgets'
 import { VueRubber } from '@rubber/vue'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { GithubIcon, Code, Check, Copy } from 'lucide-vue-next'
 
 type Axis = 'x' | 'y' | 'xy'
 type AnimationType = 'spring' | 'ease' | 'linear' | 'none'
@@ -65,6 +74,21 @@ const elementStyle = computed(() => ({
   height: `${height.value[0]}px`,
   borderRadius: `${borderRadius.value[0]}px`,
 }))
+
+// Config code generation
+const configCode = computed(() => {
+  return JSON.stringify(rubberProps.value, null, 2)
+})
+
+// Copy functionality
+const copied = ref(false)
+async function copyConfig() {
+  await navigator.clipboard.writeText(configCode.value)
+  copied.value = true
+  setTimeout(() => {
+    copied.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -91,8 +115,49 @@ const elementStyle = computed(() => ({
         />
       </div>
     </div>
+
     <!-- Right: Preview -->
-    <div class="bg-secondary flex flex-1 items-center justify-center">
+    <div class="bg-secondary relative flex flex-1 items-center justify-center">
+      <!-- Top right buttons -->
+      <div class="absolute top-4 right-4 flex gap-2">
+        <Dialog>
+          <DialogTrigger as-child>
+            <Button variant="outline" size="icon">
+              <Code class="size-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent class="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Configuration</DialogTitle>
+            </DialogHeader>
+            <div class="relative">
+              <pre
+                class="bg-muted rounded-md p-4 text-sm overflow-auto max-h-80"
+              ><code>{{ configCode }}</code></pre>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                class="absolute top-2 right-2"
+                @click="copyConfig"
+              >
+                <Check v-if="copied" class="size-4" />
+                <Copy v-else class="size-4" />
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Button
+          variant="outline"
+          size="icon"
+          as="a"
+          href="https://github.com/rookie-orange/rubber"
+          target="_blank"
+        >
+          <GithubIcon class="size-4" />
+        </Button>
+      </div>
+
       <VueRubber
         v-bind="rubberProps"
         :style="elementStyle"
